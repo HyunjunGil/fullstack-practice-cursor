@@ -186,14 +186,6 @@ const EmailVerificationForm = () => {
                     {error && <div className="error-message">{error}</div>}
                     {success && <div className="success-message">{success}</div>}
 
-                    <button 
-                        type="submit" 
-                        className="auth-button primary"
-                        disabled={isLoading || verificationCode.join('').length !== 6}
-                    >
-                        {isLoading ? 'Verifying...' : 'Verify Email'}
-                    </button>
-
                     <div className="resend-section">
                         <p>Didn't receive the code?</p>
                         <button
@@ -208,6 +200,14 @@ const EmailVerificationForm = () => {
                             }
                         </button>
                     </div>
+
+                    <button 
+                        type="submit" 
+                        className="auth-button primary"
+                        disabled={isLoading || verificationCode.join('').length !== 6}
+                    >
+                        {isLoading ? 'Verifying...' : 'Verify Email'}
+                    </button>
 
                     <div className="auth-links">
                         <button
