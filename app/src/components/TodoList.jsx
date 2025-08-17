@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTodo } from '../context/TodoContext';
 import TodoItem from './TodoItem';
 import './TodoList.css';
 
 const TodoList = () => {
+    const { t } = useTranslation('todo');
     const { 
         todos, 
         loading, 
@@ -47,7 +49,7 @@ const TodoList = () => {
             <div className="todo-list-container">
                 <div className="loading-state">
                     <div className="loading-spinner"></div>
-                    <p>Loading your todos...</p>
+                    <p>{t('loading', { defaultValue: '할 일을 불러오는 중...' })}</p>
                 </div>
             </div>
         );
@@ -58,7 +60,7 @@ const TodoList = () => {
             <div className="todo-list-container">
                 <div className="error-state">
                     <div className="error-icon">❌</div>
-                    <h3>Error loading todos</h3>
+                    <h3>{t('error.title', { defaultValue: '할 일을 불러오는 중 오류가 발생했습니다' })}</h3>
                     <p>{error}</p>
                 </div>
             </div>
@@ -70,8 +72,8 @@ const TodoList = () => {
             <div className="todo-list-container">
                 <div className="empty-state">
                     <div className="empty-icon">📝</div>
-                    <h3>No todos yet</h3>
-                    <p>Create your first todo to get started!</p>
+                    <h3>{t('empty.title')}</h3>
+                    <p>{t('empty.description')}</p>
                 </div>
             </div>
         );
@@ -87,121 +89,116 @@ const TodoList = () => {
                 <div className="todo-stats enhanced">
                     <div className="stat-item">
                         <span className="stat-number">{activeTodos.length}</span>
-                        <span className="stat-label">Active</span>
+                        <span className="stat-label">{t('stats.pending')}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">{completedTodos.length}</span>
-                        <span className="stat-label">Completed</span>
+                        <span className="stat-label">{t('stats.completed')}</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">{stats.todosWithDeadlines}</span>
-                        <span className="stat-label">With Deadlines</span>
+                        <span className="stat-label">{t('stats.with_deadlines')}</span>
                     </div>
                     <div className="stat-item">
-                        <span className="stat-number">{stats.overdueTodos}</span>
-                        <span className="stat-label">Overdue</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-number">{stats.dueSoonTodos}</span>
-                        <span className="stat-label">Due Soon</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-number">{Math.round(stats.deadlineCompletionRate)}%</span>
-                        <span className="stat-label">Completion Rate</span>
+                        <span className="stat-number">{stats.completionRate}%</span>
+                        <span className="stat-label">{t('stats.completion_rate')}</span>
                     </div>
                 </div>
             )}
 
-            {/* Overdue Todos Section */}
+            {/* Special Todo Sections */}
             {overdueTodos.length > 0 && (
-                <div className="todo-section overdue-section">
-                    <h2 className="section-title overdue-title" onClick={() => setShowOverdue(!showOverdue)}>
-                        <span className="overdue-icon">⚠️</span>
-                        Overdue Todos ({overdueTodos.length})
+                <div className="special-todos-section overdue">
+                    <div className="section-header" onClick={() => setShowOverdue(!showOverdue)}>
+                        <h3>⚠️ {t('deadline.overdue')} ({overdueTodos.length})</h3>
                         <span className="toggle-icon">{showOverdue ? '▼' : '▶'}</span>
-                    </h2>
-                    {showOverdue && overdueTodos.map(todo => (
-                        <TodoItem
-                            key={todo.id}
-                            todo={todo}
-                            onUpdate={updateTodo}
-                            onToggle={toggleTodoCompletion}
-                            onDelete={deleteTodo}
-                            onSetDeadline={setTodoDeadline}
-                            onRemoveDeadline={removeTodoDeadline}
-                            loading={loading}
-                        />
-                    ))}
+                    </div>
+                    {showOverdue && (
+                        <div className="special-todos-list">
+                            {overdueTodos.map(todo => (
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onUpdate={updateTodo}
+                                    onToggle={toggleTodoCompletion}
+                                    onDelete={deleteTodo}
+                                    onSetDeadline={setTodoDeadline}
+                                    onRemoveDeadline={removeTodoDeadline}
+                                    isSpecial={true}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 
-            {/* Due Soon Todos Section */}
             {dueSoonTodos.length > 0 && (
-                <div className="todo-section due-soon-section">
-                    <h2 className="section-title due-soon-title" onClick={() => setShowDueSoon(!showDueSoon)}>
-                        <span className="due-soon-icon">⏰</span>
-                        Due Soon ({dueSoonTodos.length})
+                <div className="special-todos-section due-soon">
+                    <div className="section-header" onClick={() => setShowDueSoon(!showDueSoon)}>
+                        <h3>⏰ {t('deadline.due_soon')} ({dueSoonTodos.length})</h3>
                         <span className="toggle-icon">{showDueSoon ? '▼' : '▶'}</span>
-                    </h2>
-                    {showDueSoon && dueSoonTodos.map(todo => (
-                        <TodoItem
-                            key={todo.id}
-                            todo={todo}
-                            onUpdate={updateTodo}
-                            onToggle={toggleTodoCompletion}
-                            onDelete={deleteTodo}
-                            onSetDeadline={setTodoDeadline}
-                            onRemoveDeadline={removeTodoDeadline}
-                            loading={loading}
-                        />
-                    ))}
+                    </div>
+                    {showDueSoon && (
+                        <div className="special-todos-list">
+                            {dueSoonTodos.map(todo => (
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onUpdate={updateTodo}
+                                    onToggle={toggleTodoCompletion}
+                                    onDelete={deleteTodo}
+                                    onSetDeadline={setTodoDeadline}
+                                    onRemoveDeadline={removeTodoDeadline}
+                                    isSpecial={true}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 
-            {/* Active Todos Section */}
-            {activeTodos.length > 0 && (
-                <div className="todo-section">
-                    <h2 className="section-title">Active Todos</h2>
-                    {activeTodos.map(todo => (
-                        <TodoItem
-                            key={todo.id}
-                            todo={todo}
-                            onUpdate={updateTodo}
-                            onToggle={toggleTodoCompletion}
-                            onDelete={deleteTodo}
-                            onSetDeadline={setTodoDeadline}
-                            onRemoveDeadline={removeTodoDeadline}
-                            loading={loading}
-                        />
-                    ))}
-                </div>
-            )}
+            {/* Main Todo List */}
+            <div className="todo-sections">
+                {/* Active Todos */}
+                {activeTodos.length > 0 && (
+                    <div className="todo-section active">
+                        <h3>{t('status.pending')} ({activeTodos.length})</h3>
+                        <div className="todo-items">
+                            {activeTodos.map(todo => (
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onUpdate={updateTodo}
+                                    onToggle={toggleTodoCompletion}
+                                    onDelete={deleteTodo}
+                                    onSetDeadline={setTodoDeadline}
+                                    onRemoveDeadline={removeTodoDeadline}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
 
-            {/* Completed Todos Section */}
-            {completedTodos.length > 0 && (
-                <div className="todo-section">
-                    <h2 className="section-title">Completed Todos</h2>
-                    {completedTodos.map(todo => (
-                        <TodoItem
-                            key={todo.id}
-                            todo={todo}
-                            onUpdate={updateTodo}
-                            onToggle={toggleTodoCompletion}
-                            onDelete={deleteTodo}
-                            onSetDeadline={setTodoDeadline}
-                            onRemoveDeadline={removeTodoDeadline}
-                            loading={loading}
-                        />
-                    ))}
-                </div>
-            )}
-
-            {loading && todos.length > 0 && (
-                <div className="loading-overlay">
-                    <div className="loading-spinner"></div>
-                    <p>Updating...</p>
-                </div>
-            )}
+                {/* Completed Todos */}
+                {completedTodos.length > 0 && (
+                    <div className="todo-section completed">
+                        <h3>{t('status.completed')} ({completedTodos.length})</h3>
+                        <div className="todo-items">
+                            {completedTodos.map(todo => (
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onUpdate={updateTodo}
+                                    onToggle={toggleTodoCompletion}
+                                    onDelete={deleteTodo}
+                                    onSetDeadline={setTodoDeadline}
+                                    onRemoveDeadline={removeTodoDeadline}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
