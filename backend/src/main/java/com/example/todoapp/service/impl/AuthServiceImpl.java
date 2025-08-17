@@ -42,6 +42,12 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
+        
+        // Check if user with same first name and last name already exists
+        if (request.getFirstName() != null && request.getLastName() != null && 
+            userRepository.existsByFirstNameAndLastName(request.getFirstName(), request.getLastName())) {
+            throw new RuntimeException("User already exists");
+        }
 
         // Create new user
         User user = new User();
