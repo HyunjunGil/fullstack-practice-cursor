@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -18,6 +19,18 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
+
+    // 여기! 헬스체크 엔드포인트 추가
+    @GetMapping("/health")
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        Map<String, Object> healthInfo = Map.of(
+            "status", "UP",
+            "service", "Todo Application",
+            "timestamp", System.currentTimeMillis(),
+            "version", "1.0.0"
+        );
+        return ResponseEntity.ok(healthInfo);
+    }
 
     @GetMapping
     public ResponseEntity<List<TodoResponseDto>> getAllTodos() {
