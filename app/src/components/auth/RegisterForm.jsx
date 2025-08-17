@@ -124,6 +124,39 @@ const RegisterForm = () => {
         )}
 
         <form onSubmit={handleSubmit}>
+          <div className="form-group name-row">
+            <div className="name-field">
+              <label htmlFor="firstName">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={errors.firstName ? 'error' : ''}
+                placeholder="Enter your first name"
+              />
+              {errors.firstName && (
+                <span className="error-text">{errors.firstName}</span>
+              )}
+            </div>
+            <div className="name-field">
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={errors.lastName ? 'error' : ''}
+                placeholder="Enter your last name"
+              />
+              {errors.lastName && (
+                <span className="error-text">{errors.lastName}</span>
+              )}
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="username">Username *</label>
             <input
@@ -185,38 +218,6 @@ const RegisterForm = () => {
             />
             {errors.confirmPassword && (
               <span className="error-text">{errors.confirmPassword}</span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className={errors.firstName ? 'error' : ''}
-              placeholder="Enter your first name"
-            />
-            {errors.firstName && (
-              <span className="error-text">{errors.firstName}</span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className={errors.lastName ? 'error' : ''}
-              placeholder="Enter your last name"
-            />
-            {errors.lastName && (
-              <span className="error-text">{errors.lastName}</span>
             )}
           </div>
 
