@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import LoginSuccessPage from "./pages/LoginSuccessPage";
+import EmailVerificationPage from "./pages/EmailVerificationPage";
 import TodoPage from "./pages/TodoPage";
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
+            <Route path="/verify-email" element={<EmailVerificationPage />} />
             <Route
               path="/login-success"
               element={

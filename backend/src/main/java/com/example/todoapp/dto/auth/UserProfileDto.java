@@ -20,6 +20,7 @@ public class UserProfileDto {
     private String firstName;
     private String lastName;
     private Boolean enabled;
+    private Boolean emailVerified;
     private Set<String> roles;
     private LocalDateTime createdAt;
 }

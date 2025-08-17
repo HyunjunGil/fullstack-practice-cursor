@@ -1,214 +1,332 @@
-# 📝 풀스택 Todo 애플리케이션
+# Full-Stack Todo Application with Email Verification
 
-Spring Boot (Java 17)와 React 19를 사용하여 구축된 현대적이고 반응형 Todo 애플리케이션입니다. 업계 모범 사례와 깔끔한 아키텍처 원칙을 따릅니다.
+A comprehensive Todo application built with Spring Boot backend and React frontend, featuring secure authentication with email verification system.
 
-## 🚀 주요 기능
+## 🚀 Features
 
-- **생성, 읽기, 수정, 삭제** - Todo 항목의 모든 CRUD 작업
-- **완료 상태 토글** - 한 번의 클릭으로 완료/미완료 전환
-- **실시간 유효성 검사** - 프론트엔드와 백엔드 모두에서
-- **반응형 디자인** - 모든 기기에서 작동
-- **현대적인 UI/UX** - 부드러운 애니메이션과 전환 효과
-- **통계 대시보드** - 활성, 완료, 총 Todo 수 표시
-- **포괄적인 오류 처리** - 사용자 친화적인 메시지
-- **로딩 상태** 및 적절한 사용자 피드백
+### Core Functionality
+- **User Authentication**: Secure registration and login system
+- **Email Verification**: 6-digit verification codes sent via SMTP
+- **Todo Management**: Create, read, update, delete, and toggle todos
+- **User Profiles**: Manage personal information and settings
+- **JWT Authentication**: Stateless authentication with refresh tokens
 
-## 🛠️ 기술 스택
+### Email Verification System
+- **6-Digit Codes**: Secure numeric verification codes
+- **10-Minute Expiry**: Codes automatically expire for security
+- **Rate Limiting**: Prevents email bombing (1 minute cooldown)
+- **Resend Functionality**: Users can request new codes
+- **Professional Templates**: Beautiful HTML email templates
+- **Account Activation**: Users must verify email before login
 
-### 백엔드
-- **Spring Boot 3.5.4** (Java 17 기반)
-- **Spring Data JPA** - 데이터베이스 작업용
-- **Spring Boot Validation** - 입력 유효성 검사용
-- **H2 Database** - 개발용 인메모리 데이터베이스
-- **Gradle** - 빌드 도구
-- **Lombok** - 보일러플레이트 코드 감소용
+### Security Features
+- **Password Hashing**: BCrypt encryption for passwords
+- **Input Validation**: Comprehensive server-side validation
+- **CORS Configuration**: Secure cross-origin requests
+- **Role-Based Access**: User and admin role management
+- **Protected Routes**: Frontend route protection
 
-### 프론트엔드
-- **React 19.1.1** - 최신 훅 사용
-- **Axios** - HTTP 클라이언트
-- **CSS 모듈** - 컴포넌트 스타일링
-- **반응형 디자인** - 모바일 우선 접근법
+## 🛠️ Technology Stack
 
-## 📁 프로젝트 구조
+### Backend
+- **Framework**: Spring Boot 3.x
+- **Language**: Java 17+
+- **Database**: H2 (in-memory)
+- **Security**: Spring Security with JWT
+- **Email**: Spring Boot Mail with Thymeleaf templates
+- **Build Tool**: Gradle
 
+### Frontend
+- **Framework**: React 18+
+- **Language**: JavaScript/JSX
+- **HTTP Client**: Axios with interceptors
+- **Routing**: React Router v6
+- **State Management**: Context API
+- **Styling**: CSS modules with responsive design
+
+## 📋 Prerequisites
+
+Before running this application, ensure you have:
+
+- **Java 17+** installed and configured
+- **Node.js 16+** and npm installed
+- **Gradle 7+** (or use the included wrapper)
+- **Email Account** for SMTP configuration (Gmail recommended)
+
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd fullstack-practice-cursor
 ```
-todo-prac/
-├── backend/                 # Spring Boot 애플리케이션
-│   ├── src/main/java/com/example/todoapp/
-│   │   ├── controller/     # REST API 컨트롤러
-│   │   ├── service/        # 비즈니스 로직 계층
-│   │   ├── repository/     # 데이터 접근 계층
-│   │   ├── entity/         # JPA 엔티티
-│   │   ├── dto/           # 데이터 전송 객체
-│   │   └── exception/     # 전역 예외 처리
-│   └── src/main/resources/
-│       └── application.properties
-├── app/                    # React 프론트엔드
-│   ├── src/
-│   │   ├── components/    # React 컴포넌트
-│   │   ├── services/      # API 서비스 계층
-│   │   ├── hooks/         # 커스텀 React 훅
-│   │   └── styles/        # 컴포넌트 스타일
-│   └── package.json
-└── README.md
+
+### 2. Backend Setup
+
+#### Navigate to Backend Directory
+```bash
+cd backend
 ```
 
-## 🚀 시작하기
+#### Configure Email Settings
+Create a `.env` file in the backend directory or set environment variables:
 
-### 필수 요구사항
-- **Java 17** 이상
-- **Node.js 18** 이상
-- **Gradle 7.6** 이상 (또는 포함된 Gradle 래퍼 사용)
+```bash
+# Gmail SMTP Configuration
+export EMAIL_USERNAME=your-email@gmail.com
+export EMAIL_PASSWORD=your-app-password
+export EMAIL_FROM=noreply@todoapp.com
 
-### 백엔드 설정
+# Or create .env file:
+EMAIL_USERNAME=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+EMAIL_FROM=noreply@todoapp.com
+```
 
-1. **백엔드 디렉토리로 이동:**
-   ```bash
-   cd backend
-   ```
+#### Gmail App Password Setup
+1. Enable 2-Factor Authentication on your Gmail account
+2. Generate an App Password:
+   - Go to Google Account settings
+   - Security → 2-Step Verification → App passwords
+   - Generate password for "Mail"
+   - Use this password as `EMAIL_PASSWORD`
 
-2. **Spring Boot 애플리케이션 실행:**
-   ```bash
-   # Gradle 래퍼 사용
-   ./gradlew bootRun
-   
-   # 또는 로컬 Gradle 설치 사용
-   gradle bootRun
-   ```
+#### Build and Run Backend
+```bash
+# Using Gradle wrapper
+./gradlew build
+./gradlew bootRun
 
-3. **백엔드 실행 확인:**
-   - API: `http://localhost:8080`
-   - H2 콘솔: `http://localhost:8080/h2-console`
-   - 데이터베이스 URL: `jdbc:h2:mem:tododb`
-   - 사용자명: `sa`
-   - 비밀번호: `password`
+# Or using system Gradle
+gradle build
+gradle bootRun
+```
 
-### 프론트엔드 설정
+The backend will start on `http://localhost:8080`
 
-1. **app 디렉토리로 이동:**
-   ```bash
-   cd app
-   ```
+### 3. Frontend Setup
 
-2. **의존성 설치:**
-   ```bash
-   npm install
-   ```
+#### Navigate to Frontend Directory
+```bash
+cd app
+```
 
-3. **개발 서버 시작:**
-   ```bash
-   npm start
-   ```
+#### Install Dependencies
+```bash
+npm install
+```
 
-4. **브라우저에서 열기:**
-   - 프론트엔드: `http://localhost:3000`
+#### Start Development Server
+```bash
+npm start
+```
 
-## 📡 API 엔드포인트
+The frontend will start on `http://localhost:3000`
 
-| 메서드 | 엔드포인트 | 설명 |
-|--------|----------|-------------|
-| `GET` | `/api/todos` | 모든 Todo 조회 |
-| `GET` | `/api/todos/{id}` | 특정 Todo 조회 |
-| `POST` | `/api/todos` | 새 Todo 생성 |
-| `PUT` | `/api/todos/{id}` | Todo 수정 |
-| `PATCH` | `/api/todos/{id}/toggle` | 완료 상태 토글 |
-| `DELETE` | `/api/todos/{id}` | Todo 삭제 |
+## 📧 Email Configuration
 
-## 🎯 사용법
+### SMTP Settings
+The application is pre-configured for Gmail SMTP:
 
-1. **새 Todo 추가:** 페이지 상단의 폼 사용
-2. **Todo 편집:** Todo 항목의 편집 버튼(✎) 클릭
-3. **완료 상태 토글:** 토글 버튼(○/✓) 클릭하여 완료/미완료 표시
-4. **Todo 삭제:** 삭제 버튼(×) 클릭 후 확인
-5. **통계 보기:** 상단에서 활성, 완료, 총 Todo 수 확인
+```properties
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=${EMAIL_USERNAME}
+spring.mail.password=${EMAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
 
-## 🔧 개발
+### Alternative Email Providers
+You can modify `application.properties` for other providers:
 
-### 백엔드 개발
-- **H2 인메모리 데이터베이스** 사용 (개발용)
-- **H2 콘솔** 활성화로 데이터베이스 검사 가능
-- **Bean Validation** 어노테이션을 사용한 유효성 검사
-- **전역 예외 처리**로 일관된 오류 응답 제공
+#### Outlook/Hotmail
+```properties
+spring.mail.host=smtp-mail.outlook.com
+spring.mail.port=587
+```
 
-### 프론트엔드 개발
-- **컴포넌트 기반 아키텍처**로 재사용 가능한 컴포넌트
-- **커스텀 훅**으로 상태 관리 및 API 호출
-- **반응형 CSS**로 현대적인 디자인 패턴
-- **오류 경계** 및 로딩 상태로 더 나은 UX
+#### Yahoo
+```properties
+spring.mail.host=smtp.mail.yahoo.com
+spring.mail.port=587
+```
 
-## 🧪 테스트
+## 🔐 Default Admin Account
 
-### 백엔드 테스트
+The application creates a default admin user on startup:
+
+- **Username**: `admin`
+- **Password**: `Admin123!`
+- **Email**: `admin@example.com`
+- **Status**: Email verified and enabled
+
+## 📱 API Endpoints
+
+### Authentication
+```
+POST   /api/auth/register           - User registration
+POST   /api/auth/verify-email       - Verify email with code
+POST   /api/auth/resend-verification - Resend verification code
+POST   /api/auth/login              - User login
+POST   /api/auth/logout             - User logout
+GET    /api/auth/me                 - Get current user info
+```
+
+### Todos (Protected Routes)
+```
+GET    /api/todos          - Get user's todos
+GET    /api/todos/{id}     - Get specific todo
+POST   /api/todos          - Create new todo
+PUT    /api/todos/{id}     - Update todo
+DELETE /api/todos/{id}     - Delete todo
+PATCH  /api/todos/{id}/toggle - Toggle completion
+```
+
+## 🔄 Email Verification Flow
+
+### 1. User Registration
+1. User fills registration form
+2. System creates account (disabled)
+3. Verification code generated and sent
+4. User redirected to verification page
+
+### 2. Email Verification
+1. User receives 6-digit code via email
+2. User enters code in verification form
+3. System validates code and expiry
+4. Account activated and enabled
+5. Welcome email sent
+6. User redirected to login
+
+### 3. Login Access
+1. User logs in with credentials
+2. System checks email verification status
+3. If verified, JWT tokens generated
+4. User access granted to protected routes
+
+## 🎨 Email Templates
+
+The application includes three professional email templates:
+
+1. **Verification Email**: Welcome message with verification code
+2. **Welcome Email**: Sent after successful verification
+3. **Password Reset**: For future password reset functionality
+
+All templates are responsive and include:
+- Professional branding
+- Clear call-to-action buttons
+- Security notices and expiry warnings
+- Mobile-friendly design
+
+## 🧪 Testing
+
+### Backend Testing
 ```bash
 cd backend
 ./gradlew test
 ```
 
-### 프론트엔드 테스트
+### Frontend Testing
 ```bash
 cd app
 npm test
 ```
 
-## 🚀 프로덕션 배포
+### Email Testing
+1. Use a real email account for testing
+2. Check spam folder if emails don't arrive
+3. Verify SMTP credentials are correct
+4. Test rate limiting by sending multiple requests
 
-### 백엔드
-- 프로덕션 데이터베이스로 설정 변경 (PostgreSQL, MySQL 등)
-- `spring.jpa.hibernate.ddl-auto=validate` 또는 `none` 설정
-- 적절한 로깅 레벨 구성
-- 환경별 속성 설정
+## 🐛 Troubleshooting
 
-### 프론트엔드
-```bash
-cd app
-npm run build
+### Common Issues
+
+#### Email Not Sending
+- Verify SMTP credentials
+- Check Gmail app password is correct
+- Ensure 2FA is enabled on Gmail
+- Check firewall/network restrictions
+
+#### Verification Code Issues
+- Codes expire after 10 minutes
+- Maximum 5 verification attempts
+- 1-minute cooldown between resend requests
+- Check email spam folder
+
+#### Build Errors
+- Ensure Java 17+ is installed
+- Verify Gradle version compatibility
+- Check all dependencies are resolved
+
+#### Frontend Issues
+- Clear browser cache and localStorage
+- Check console for JavaScript errors
+- Verify backend is running on port 8080
+
+### Debug Mode
+Enable debug logging in `application.properties`:
+```properties
+logging.level.com.example.todoapp=DEBUG
+logging.level.org.springframework.mail=DEBUG
 ```
-- `build` 폴더를 웹 서버에 배포
-- `todoService.js`의 API 기본 URL을 프로덕션용으로 업데이트
 
-## 📱 반응형 디자인
+## 🔒 Security Considerations
 
-애플리케이션은 완전히 반응형이며 다음에서 작동합니다:
-- **데스크톱** (1200px+)
-- **태블릿** (768px - 1199px)
-- **모바일** (320px - 767px)
+- **Verification codes expire** after 10 minutes
+- **Rate limiting** prevents email bombing
+- **Maximum attempts** limit brute force attacks
+- **HTTPS required** in production
+- **Environment variables** for sensitive data
+- **Input validation** on all endpoints
 
-## 🔒 보안 기능
+## 🚀 Production Deployment
 
-- **입력 유효성 검사** - 프론트엔드와 백엔드 모두에서
-- **SQL 인젝션 방지** - JPA를 통한 방지
-- **XSS 방지** - 적절한 콘텐츠 이스케이핑
-- **CORS 구성** - API 접근용
+### Environment Variables
+Set production values for:
+- `jwt.secret`: Strong, unique secret key
+- `spring.mail.username`: Production email account
+- `spring.mail.password`: Production app password
+- Database connection details
 
-## 🎨 UI/UX 기능
+### Security Headers
+Enable security headers in production:
+- HTTPS enforcement
+- CORS restrictions
+- Rate limiting
+- Input sanitization
 
-- **현대적인 그라디언트 배경**
-- **부드러운 호버 애니메이션**
-- **로딩 스피너** 및 진행 표시기
-- **토스트 알림** - 사용자 피드백용
-- **깔끔하고 미니멀한 디자인**
-- **접근 가능한 색상 구성**
+## 📝 Contributing
 
-## 🤝 기여하기
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
-1. 저장소 포크
-2. 기능 브랜치 생성
-3. 변경사항 작성
-4. 적용 가능한 경우 테스트 추가
-5. 풀 리퀘스트 제출
+## 📄 License
 
-## 📄 라이선스
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-이 프로젝트는 오픈 소스이며 [MIT 라이선스](LICENSE) 하에 제공됩니다.
+## 🤝 Support
 
-## 🆘 지원
+For support and questions:
+- Create an issue in the repository
+- Check the troubleshooting section
+- Review the API documentation
 
-문제가 발생한 경우:
-1. 콘솔에서 오류 메시지 확인
-2. 백엔드와 프론트엔드가 모두 실행 중인지 확인
-3. H2 콘솔에서 데이터베이스 문제 확인
-4. 애플리케이션 로그 검토
+## 🎯 Roadmap
+
+- [ ] Password reset functionality
+- [ ] Two-factor authentication
+- [ ] Social login integration
+- [ ] Mobile app development
+- [ ] Advanced todo features (categories, priorities)
+- [ ] Team collaboration features
+- [ ] API rate limiting
+- [ ] Comprehensive test coverage
 
 ---
 
-**즐거운 코딩 되세요! 🎉**
+**Happy coding! 🎉**

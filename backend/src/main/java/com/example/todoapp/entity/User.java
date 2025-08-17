@@ -48,8 +48,11 @@ public class User {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @Column(name = "email_verified", nullable = false)
+    private Boolean emailVerified = false;
+
     @Column(nullable = false)
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
